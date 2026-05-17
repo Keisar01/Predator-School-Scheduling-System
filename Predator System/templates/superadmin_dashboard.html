@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Superadmin Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-slate-950 min-h-screen text-slate-100">
+
+<!-- =========================
+     LOGOUT MODAL
+========================= -->
+<div id="logoutModal" class="fixed inset-0 bg-black/60 hidden items-center justify-center z-50">
+    <div class="bg-slate-900 border border-indigo-500/30 rounded-2xl p-8 w-full max-w-md">
+        <h2 class="text-2xl font-bold mb-3">Confirm Logout</h2>
+        <p class="text-slate-300 mb-6">Are you sure you want to log out?</p>
+
+        <div class="flex justify-end gap-3">
+            <button id="cancelLogout" class="px-4 py-2 rounded-lg border border-slate-600 hover:bg-slate-800">
+                Cancel
+            </button>
+
+            <a href="/logout" class="px-4 py-2 rounded-lg bg-rose-500 hover:bg-rose-400 text-white">
+                Logout
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- =========================
+     DELETE EVENT MODAL
+========================= -->
+<div id="deleteModal" class="fixed inset-0 bg-black/60 hidden items-center justify-center z-50">
+    <div class="bg-slate-900 border border-rose-500/30 rounded-2xl p-8 w-full max-w-md">
+        <h2 class="text-2xl font-bold mb-3">Delete Event</h2>
+        <p class="text-slate-300 mb-6">Are you sure you want to delete this event?</p>
+
+        <div class="flex justify-end gap-3">
+            <button id="cancelDelete" class="px-4 py-2 rounded-lg border border-slate-600 hover:bg-slate-800">
+                Cancel
+            </button>
+
+            <a id="confirmDelete" href="#" class="px-4 py-2 rounded-lg bg-rose-500 hover:bg-rose-400 text-white">
+                Delete
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- =========================
+     DELETE USER MODAL
+========================= -->
+<div id="deleteUserModal" class="fixed inset-0 bg-black/60 hidden items-center justify-center z-50">
+    <div class="bg-slate-900 border border-rose-500/30 rounded-2xl p-8 w-full max-w-md">
+        <h2 class="text-2xl font-bold mb-3">Delete User</h2>
+        <p class="text-slate-300 mb-6">Are you sure you want to delete this user?</p>
+
+        <div class="flex justify-end gap-3">
+            <button id="cancelUserDelete" class="px-4 py-2 rounded-lg border border-slate-600 hover:bg-slate-800">
+                Cancel
+            </button>
+
+            <a id="confirmUserDelete" href="#" class="px-4 py-2 rounded-lg bg-rose-500 hover:bg-rose-400 text-white">
+                Delete
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- =========================
+     MAKE ADMIN MODAL
+========================= -->
+<div id="makeAdminModal" class="fixed inset-0 bg-black/60 hidden items-center justify-center z-50">
+    <div class="bg-slate-900 border border-amber-500/30 rounded-2xl p-8 w-full max-w-md">
+        <h2 class="text-2xl font-bold mb-3">Make Admin</h2>
+        <p class="text-slate-300 mb-6">Promote this user to admin?</p>
+
+        <div class="flex justify-end gap-3">
+            <button id="cancelMakeAdmin" class="px-4 py-2 rounded-lg border border-slate-600 hover:bg-slate-800">
+                Cancel
+            </button>
+
+            <a id="confirmMakeAdmin" href="#" class="px-4 py-2 rounded-lg bg-amber-500 hover:bg-amber-400 text-white">
+                Confirm
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- MAIN -->
+<div class="min-h-screen flex">
+
+    <!-- SIDEBAR -->
+    <aside class="hidden lg:flex w-72 bg-slate-900/95 border-r border-indigo-500/20 flex-col px-6 py-8">
+
+        <div>
+            <p class="text-xs uppercase tracking-[0.2em] text-slate-400">Predators</p>
+            <h1 class="text-xl font-bold mt-1">Superadmin</h1>
+        </div>
+
+        <nav class="mt-8 space-y-2 text-sm">
+
+            <a href="/superadmin"
+               class="block rounded-lg px-3 py-2 bg-indigo-500/20 text-indigo-200">
+               Dashboard
+            </a>
+
+            <a href="/api/view_events"
+               class="block rounded-lg px-3 py-2 hover:bg-slate-800 text-slate-300">
+               Event List
+            </a>
+
+            <button class="logout-btn block w-full text-left rounded-lg px-3 py-2 hover:bg-slate-800 text-slate-300">
+                Logout
+            </button>
+
+        </nav>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="flex-1 max-w-7xl mx-auto px-4 py-8 w-full">
+
+        <!-- HEADER -->
+        <header class="flex justify-between items-center bg-slate-900/70 p-6 rounded-xl">
+
+            <div>
+                <p class="text-sm text-slate-400">Master Control</p>
+                <h2 class="text-2xl font-bold">Super Admin Dashboard</h2>
+            </div>
+
+            <button class="logout-btn bg-indigo-500 px-4 py-2 rounded-lg hover:bg-indigo-400">
+                Logout
+            </button>
+
+        </header>
+
+        <!-- USERS -->
+        <section class="mt-6 bg-slate-900/70 p-6 rounded-xl">
+            <h3 class="text-lg font-bold mb-4">Manage Users</h3>
+
+            <table class="w-full text-sm">
+                <tbody>
+                {% for user in users %}
+                <tr class="border-b border-slate-800">
+
+                    <td class="py-3">{{ user["username"] }}</td>
+                    <td>{{ user["name"] }}</td>
+                    <td>{{ user["role"] }}</td>
+
+                    <td>
+
+                        {% if user["role"] == 'user' %}
+
+                        <button type="button"
+                            class="make-admin-btn px-3 py-1.5 rounded-lg border border-amber-500 text-amber-300"
+                            data-url="/make_admin/{{ user['user_id'] }}">
+                            Make Admin
+                        </button>
+
+                        <button type="button"
+                            class="delete-user-btn px-3 py-1.5 rounded-lg bg-rose-500 text-white"
+                            data-url="/delete_user/{{ user['user_id'] }}">
+                            Delete
+                        </button>
+
+                        {% elif user["role"] == 'admin' %}
+
+                                <button type="button"
+                                    class="delete-user-btn px-3 py-1.5 rounded-lg bg-rose-500 text-white"
+                                    data-url="/delete_user/{{ user['user_id'] }}">
+                                    Delete
+                                </button>
+
+                        {% endif %}           
+
+                    </td>
+
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </section>
+
+        <!-- EVENTS (FIXED SEARCH + MODAL SUPPORT) -->
+        <section class="mt-6 bg-slate-900/70 p-6 rounded-xl">
+
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-lg font-bold">All Events</h3>
+
+                <input id="adminEventSearch"
+                       type="text"
+                       placeholder="Search events..."
+                       class="w-72 rounded-lg border border-slate-700 bg-slate-950/80 px-3 py-2">
+            </div>
+
+            <table class="w-full text-sm">
+                <tbody id="adminEventTable">
+
+                {% for event in events %}
+                <tr class="border-b border-slate-800 admin-event-row"
+                    data-event="{{ (event.event_name ~ ' ' ~ event.location ~ ' ' ~ event.status)|lower }}">
+
+                    <td class="py-3">{{ event["event_name"] }}</td>
+                    <td>{{ event["status"] }}</td>
+                    <td>{{ event["date"] }}</td>
+                    <td>{{ event["location"] }}</td>
+
+                    <td class="flex gap-2">
+
+                        <a href="/admin/update_event/{{ event['event_id'] }}"
+                           class="px-3 py-1.5 rounded-lg border border-slate-600 hover:bg-slate-800">
+                           Edit
+                        </a>
+
+                        <!-- ✅ FIXED DELETE FOR MODAL -->
+                        <button type="button"
+                                class="delete-event-btn px-3 py-1.5 rounded-lg bg-rose-500 text-white"
+                                data-url="/api/delete_event/{{ event['event_id'] }}">
+                            Delete
+                        </button>
+
+                    </td>
+
+                </tr>
+                {% endfor %}
+
+                </tbody>
+            </table>
+
+        </section>
+
+    </main>
+</div>
+
+<script src="{{ url_for('static', filename='js/admin_dashboard.js') }}"></script>
+
+</body>
+</html>

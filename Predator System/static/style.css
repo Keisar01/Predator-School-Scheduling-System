@@ -1,0 +1,260 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+/* =========================
+   BODY
+========================= */
+body {
+    background: #f4f6f9;
+    padding: 20px;
+}
+
+/* =========================
+   GENERAL CONTAINER
+========================= */
+.container {
+    max-width: 900px;
+    margin: auto;
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+/* =========================
+   LOGIN / REGISTER BOX (FIX)
+========================= */
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* FIX INPUT OVERFLOW */
+input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+/* BUTTON STYLE */
+button {
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    background: #2c7be5;
+    color: white;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #1a5fd1;
+}
+
+/* =========================
+   TABLES (ADMIN PANEL)
+========================= */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+    background: white;
+}
+
+th, td {
+    padding: 12px;
+    border: 1px solid #ddd;
+    text-align: left;
+}
+
+th {
+    background: #2c7be5;
+    color: white;
+}
+
+/* =========================
+   LINKS (BUTTON STYLE)
+========================= */
+a {
+    text-decoration: none;
+    color: #2c7be5;
+    margin-right: 10px;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* =========================
+   ADMIN HEADER
+========================= */
+.admin-header {
+    background: #1f2d3d;
+    color: white;
+    padding: 15px;
+    font-size: 20px;
+    text-align: center;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+/* =========================
+   LOGOUT BUTTON
+========================= */
+.logout {
+    display: inline-block;
+    margin-top: 20px;
+    color: red;
+}
+
+/* =========================
+   STATUS COLORS
+========================= */
+.status-ongoing {
+    color: green;
+    font-weight: bold;
+}
+
+.status-cancelled {
+    color: red;
+    font-weight: bold;
+}
+
+.status-delayed {
+    color: orange;
+    font-weight: bold;
+}
+
+/* =========================
+   LOGIN / REGISTER CENTER FIX
+========================= */
+.login-box {
+    max-width: 400px;
+    margin: 80px auto;
+    background: white;
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+
+/* =========================
+   PAGE LAYOUT (GRID)
+========================= */
+.container {
+    max-width: 1100px;
+    margin: 40px auto;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+}
+
+/* GRID FOR EVENTS */
+.event-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
+/* =========================
+   EVENT CARD DESIGN
+========================= */
+.event-box {
+    background: #ffffff;
+    border-radius: 14px;
+    padding: 16px 18px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    transition: 0.2s ease;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.event-box:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 18px rgba(0,0,0,0.12);
+}
+
+/* =========================
+   TITLE (EVENT NAME)
+========================= */
+.event-title {
+    font-size: 18px;
+    font-weight: bold;
+    color: #111;
+    margin-bottom: 8px;
+}
+
+/* =========================
+   FIELD STYLE (Name: Value)
+========================= */
+.event-field {
+    font-size: 14px;
+    color: #333;
+}
+
+.event-label {
+    font-weight: bold;
+    color: #555;
+}
+
+/* =========================
+   STATUS TAGS
+========================= */
+.status-ongoing {
+    color: #0f9d58;
+    font-weight: bold;
+}
+
+.status-delayed {
+    color: #f4b400;
+    font-weight: bold;
+}
+
+.status-cancelled {
+    color: #db4437;
+    font-weight: bold;
+}
+
+/* =========================
+   BUTTONS
+========================= */
+.event-box a {
+    display: inline-block;
+    margin-top: 8px;
+    margin-right: 8px;
+    padding: 6px 10px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 13px;
+    color: white;
+}
+
+/* Edit */
+.event-box a[href*="update_event"] {
+    background: #4285f4;
+}
+
+/* Delete */
+.event-box a[href*="delete_event"] {
+    background: #db4437;
+}
+
+/* =========================
+   RESPONSIVE DESIGN
+========================= */
+@media (max-width: 900px) {
+    .event-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 600px) {
+    .event-grid {
+        grid-template-columns: 1fr;
+    }
+}

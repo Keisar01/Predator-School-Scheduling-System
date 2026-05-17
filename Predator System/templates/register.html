@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Predators Event Planner | Register</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="min-h-screen bg-slate-950 text-white">
+    <main class="min-h-screen grid md:grid-cols-2">
+        <section class="relative hidden md:block">
+            <img src="https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=1200&q=80" alt="Event background" class="absolute inset-0 h-full w-full object-cover opacity-45">
+            <div class="absolute inset-0 bg-gradient-to-br from-indigo-950/90 via-slate-950/80 to-purple-950/90"></div>
+            <div class="relative z-10 h-full p-12 flex flex-col justify-between">
+                <h1 class="text-3xl font-semibold tracking-wide">PREDATORS EVENT PLANNER</h1>
+                <p class="text-xl font-semibold">Create your account to begin planning events.</p>
+            </div>
+        </section>
+
+        <section class="flex items-center justify-center px-5 py-10 bg-gradient-to-br from-slate-950 via-slate-900 to-indigo-950">
+            <div class="w-full max-w-md rounded-2xl border border-indigo-400/20 bg-slate-900/75 backdrop-blur p-7 shadow-2xl shadow-indigo-500/10">
+                <h2 class="text-2xl font-bold">Sign Up</h2>
+                <p class="text-sm text-slate-400 mt-1">Create your user account</p>
+
+                {% with messages = get_flashed_messages() %}
+                    {% if messages %}
+                        <div class="mt-4 space-y-2">
+                            {% for message in messages %}
+                                <div class="rounded-lg border border-pink-400/30 bg-pink-500/10 px-3 py-2 text-pink-200 text-sm">{{ message }}</div>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                {% endwith %}
+
+                <form action="/api/register" method="POST" class="mt-6 space-y-4">
+                    <input type="text" name="username" placeholder="Username" required class="w-full rounded-xl border border-slate-700 bg-slate-950/80 px-3 py-2.5 outline-none focus:border-indigo-400 focus:ring-2 focus:ring-indigo-400/20">
+                    <input type="text" name="name" placeholder="Full Name" required class="w-full rounded-xl border border-slate-700 bg-slate-950/80 px-3 py-2.5 outline-none focus:border-indigo-400 focus:ring-2 focus:ring-indigo-400/20">
+                    <input type="password" name="password" placeholder="Password" required class="w-full rounded-xl border border-slate-700 bg-slate-950/80 px-3 py-2.5 outline-none focus:border-indigo-400 focus:ring-2 focus:ring-indigo-400/20">
+                    <input type="password" name="confirm_password" placeholder="Confirm Password" required class="w-full rounded-xl border border-slate-700 bg-slate-950/80 px-3 py-2.5 outline-none focus:border-indigo-400 focus:ring-2 focus:ring-indigo-400/20">
+                    <button type="submit" class="w-full rounded-xl bg-indigo-500 py-2.5 font-medium hover:bg-indigo-400 transition">Register</button>
+                </form>
+
+                <p class="mt-5 text-sm text-slate-400">
+                    Already have an account?
+                    <a href="/" class="text-indigo-300 hover:text-indigo-200">Back to login</a>
+                </p>
+            </div>
+        </section>
+    </main>
+</body>
+</html>

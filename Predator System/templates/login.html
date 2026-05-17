@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Predators Event Planner | Login</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="min-h-screen bg-slate-950 text-white">
+    <main class="min-h-screen grid md:grid-cols-2">
+        <section class="relative hidden md:block">
+            <img src="https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&w=1200&q=80" alt="Event background" class="absolute inset-0 h-full w-full object-cover opacity-45">
+            <div class="absolute inset-0 bg-gradient-to-br from-indigo-950/90 via-slate-950/80 to-purple-950/90"></div>
+            <div class="relative z-10 h-full p-12 flex flex-col justify-between">
+                <h1 class="text-3xl font-semibold tracking-wide">PREDATORS EVENT PLANNER</h1>
+                <div>
+                    <p class="text-slate-300 text-sm">SCHOOL SCHEDULE SYSTEM</p>
+                    <p class="text-2xl font-semibold mt-2">Plan smarter. Manage faster.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="flex items-center justify-center px-5 py-10 bg-gradient-to-br from-slate-950 via-slate-900 to-indigo-950">
+            <div class="w-full max-w-md rounded-2xl border border-indigo-400/20 bg-slate-900/75 backdrop-blur p-7 shadow-2xl shadow-indigo-500/10">
+                <h2 class="text-2xl font-bold">Sign In</h2>
+                <p class="text-sm text-slate-400 mt-1">Welcome back to your dashboard</p>
+
+                {% with messages = get_flashed_messages() %}
+                    {% if messages %}
+                        <div class="mt-4 space-y-2">
+                            {% for message in messages %}
+                                <div class="rounded-lg border border-pink-400/30 bg-pink-500/10 px-3 py-2 text-pink-200 text-sm">{{ message }}</div>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                {% endwith %}
+
+                {% if remaining_lock_seconds and remaining_lock_seconds > 0 %}
+                    <div id="lockNotice" class="mt-4 rounded-lg border border-amber-400/30 bg-amber-500/10 px-3 py-2 text-amber-200 text-sm">
+                        Login locked. Try again in <span id="lockCountdown">{{ remaining_lock_seconds }}</span> seconds.
+                    </div>
+                {% endif %}
+
+                <form id="loginForm" action="/api/login" method="POST" class="mt-6 space-y-4" data-lock-seconds="{{ remaining_lock_seconds or 0 }}">
+                    <div>
+                        <label class="text-xs uppercase tracking-wide text-slate-400">Username</label>
+                        <input type="text" name="username" required class="mt-1 w-full rounded-xl border border-slate-700 bg-slate-950/80 px-3 py-2.5 outline-none focus:border-indigo-400 focus:ring-2 focus:ring-indigo-400/20">
+                    </div>
+                    <div>
+                        <label class="text-xs uppercase tracking-wide text-slate-400">Password</label>
+                        <input type="password" name="password" required class="mt-1 w-full rounded-xl border border-slate-700 bg-slate-950/80 px-3 py-2.5 outline-none focus:border-indigo-400 focus:ring-2 focus:ring-indigo-400/20">
+                    </div>
+                    <button id="loginButton" type="submit" class="w-full rounded-xl bg-indigo-500 py-2.5 font-medium hover:bg-indigo-400 transition">Login</button>
+                </form>
+
+                <p class="mt-5 text-sm text-slate-400">
+                    No account?
+                    <a href="/register" class="text-indigo-300 hover:text-indigo-200">Create one</a>
+                </p>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        const form = document.getElementById("loginForm");
+        const lockNotice = document.getElementById("lockNotice");
+        const countdownEl = document.getElementById("lockCountdown");
+        const loginBtn = document.getElementById("loginButton");
+
+        if (form) {
+            let seconds = Number(form.dataset.lockSeconds || 0);
+            const fields = Array.from(form.querySelectorAll("input"));
+
+            const setLocked = (locked) => {
+                fields.forEach((field) => {
+                    field.disabled = locked;
+                });
+                if (loginBtn) {
+                    loginBtn.disabled = locked;
+                    loginBtn.classList.toggle("opacity-50", locked);
+                    loginBtn.classList.toggle("cursor-not-allowed", locked);
+                }
+            };
+
+            if (seconds > 0) {
+                setLocked(true);
+                const timer = setInterval(() => {
+                    seconds -= 1;
+                    if (countdownEl) countdownEl.textContent = String(Math.max(seconds, 0));
+                    if (seconds <= 0) {
+                        clearInterval(timer);
+                        setLocked(false);
+                        if (lockNotice) lockNotice.classList.add("hidden");
+                    }
+                }, 1000);
+            }
+        }
+    </script>
+</body>
+</html>
